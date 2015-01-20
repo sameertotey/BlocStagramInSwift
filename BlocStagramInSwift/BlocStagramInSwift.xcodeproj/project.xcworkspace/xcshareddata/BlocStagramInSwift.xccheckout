@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7C5E8F09-ADB7-4020-9440-A81CA3B65B1E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BlocStagramInSwift</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5311AFE08C7BEC55943757D240D2B7E3B263D710</key>
+		<string>https://github.com/sameertotey/BlocStagramInSwift.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BlocStagramInSwift/BlocStagramInSwift.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5311AFE08C7BEC55943757D240D2B7E3B263D710</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/sameertotey/BlocStagramInSwift.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5311AFE08C7BEC55943757D240D2B7E3B263D710</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5311AFE08C7BEC55943757D240D2B7E3B263D710</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlocStagramInSwift</string>
+		</dict>
+	</array>
+</dict>
+</plist>
