@@ -14,6 +14,18 @@
 		052802D71A6F183A00FF44BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 052802D61A6F183A00FF44BE /* Images.xcassets */; };
 		052802DA1A6F183A00FF44BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 052802D81A6F183A00FF44BE /* LaunchScreen.xib */; };
 		052802E61A6F183A00FF44BE /* BlocStagramInSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052802E51A6F183A00FF44BE /* BlocStagramInSwiftTests.swift */; };
+		052802FA1A6F1A6700FF44BE /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F01A6F1A6700FF44BE /* 1.jpg */; };
+		052802FB1A6F1A6700FF44BE /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F11A6F1A6700FF44BE /* 2.jpg */; };
+		052802FC1A6F1A6700FF44BE /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F21A6F1A6700FF44BE /* 3.jpg */; };
+		052802FD1A6F1A6700FF44BE /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F31A6F1A6700FF44BE /* 4.jpg */; };
+		052802FE1A6F1A6700FF44BE /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F41A6F1A6700FF44BE /* 5.jpg */; };
+		052802FF1A6F1A6700FF44BE /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F51A6F1A6700FF44BE /* 6.jpg */; };
+		052803001A6F1A6700FF44BE /* 7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F61A6F1A6700FF44BE /* 7.jpg */; };
+		052803011A6F1A6700FF44BE /* 8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F71A6F1A6700FF44BE /* 8.jpg */; };
+		052803021A6F1A6700FF44BE /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F81A6F1A6700FF44BE /* 9.jpg */; };
+		052803031A6F1A6700FF44BE /* 10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 052802F91A6F1A6700FF44BE /* 10.jpg */; };
+		052803051A6F1B3400FF44BE /* MediaTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052803041A6F1B3400FF44BE /* MediaTableViewController.swift */; };
+		052803071A6F2EF900FF44BE /* MediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052803061A6F2EF900FF44BE /* MediaTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +50,18 @@
 		052802DF1A6F183A00FF44BE /* BlocStagramInSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocStagramInSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		052802E41A6F183A00FF44BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		052802E51A6F183A00FF44BE /* BlocStagramInSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocStagramInSwiftTests.swift; sourceTree = "<group>"; };
+		052802F01A6F1A6700FF44BE /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		052802F11A6F1A6700FF44BE /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		052802F21A6F1A6700FF44BE /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
+		052802F31A6F1A6700FF44BE /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
+		052802F41A6F1A6700FF44BE /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
+		052802F51A6F1A6700FF44BE /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
+		052802F61A6F1A6700FF44BE /* 7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 7.jpg; sourceTree = "<group>"; };
+		052802F71A6F1A6700FF44BE /* 8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpg; sourceTree = "<group>"; };
+		052802F81A6F1A6700FF44BE /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
+		052802F91A6F1A6700FF44BE /* 10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10.jpg; sourceTree = "<group>"; };
+		052803041A6F1B3400FF44BE /* MediaTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTableViewController.swift; sourceTree = "<group>"; };
+		052803061A6F2EF900FF44BE /* MediaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,9 +103,12 @@
 		052802C91A6F183A00FF44BE /* BlocStagramInSwift */ = {
 			isa = PBXGroup;
 			children = (
+				052802EF1A6F1A4C00FF44BE /* Images */,
 				052802CC1A6F183A00FF44BE /* AppDelegate.swift */,
 				052802D11A6F183A00FF44BE /* ViewController.swift */,
 				052802D31A6F183A00FF44BE /* Main.storyboard */,
+				052803041A6F1B3400FF44BE /* MediaTableViewController.swift */,
+				052803061A6F2EF900FF44BE /* MediaTableViewCell.swift */,
 				052802D61A6F183A00FF44BE /* Images.xcassets */,
 				052802D81A6F183A00FF44BE /* LaunchScreen.xib */,
 				052802CE1A6F183A00FF44BE /* BlocStagramInSwift.xcdatamodeld */,
@@ -113,6 +140,23 @@
 				052802E41A6F183A00FF44BE /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		052802EF1A6F1A4C00FF44BE /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				052802F01A6F1A6700FF44BE /* 1.jpg */,
+				052802F11A6F1A6700FF44BE /* 2.jpg */,
+				052802F21A6F1A6700FF44BE /* 3.jpg */,
+				052802F31A6F1A6700FF44BE /* 4.jpg */,
+				052802F41A6F1A6700FF44BE /* 5.jpg */,
+				052802F51A6F1A6700FF44BE /* 6.jpg */,
+				052802F61A6F1A6700FF44BE /* 7.jpg */,
+				052802F71A6F1A6700FF44BE /* 8.jpg */,
+				052802F81A6F1A6700FF44BE /* 9.jpg */,
+				052802F91A6F1A6700FF44BE /* 10.jpg */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,7 +239,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				052803031A6F1A6700FF44BE /* 10.jpg in Resources */,
+				052803011A6F1A6700FF44BE /* 8.jpg in Resources */,
+				052802FF1A6F1A6700FF44BE /* 6.jpg in Resources */,
 				052802D51A6F183A00FF44BE /* Main.storyboard in Resources */,
+				052802FE1A6F1A6700FF44BE /* 5.jpg in Resources */,
+				052802FD1A6F1A6700FF44BE /* 4.jpg in Resources */,
+				052802FA1A6F1A6700FF44BE /* 1.jpg in Resources */,
+				052802FB1A6F1A6700FF44BE /* 2.jpg in Resources */,
+				052802FC1A6F1A6700FF44BE /* 3.jpg in Resources */,
+				052803001A6F1A6700FF44BE /* 7.jpg in Resources */,
+				052803021A6F1A6700FF44BE /* 9.jpg in Resources */,
 				052802DA1A6F183A00FF44BE /* LaunchScreen.xib in Resources */,
 				052802D71A6F183A00FF44BE /* Images.xcassets in Resources */,
 			);
@@ -218,6 +272,8 @@
 				052802D21A6F183A00FF44BE /* ViewController.swift in Sources */,
 				052802D01A6F183A00FF44BE /* BlocStagramInSwift.xcdatamodeld in Sources */,
 				052802CD1A6F183A00FF44BE /* AppDelegate.swift in Sources */,
+				052803051A6F1B3400FF44BE /* MediaTableViewController.swift in Sources */,
+				052803071A6F2EF900FF44BE /* MediaTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
