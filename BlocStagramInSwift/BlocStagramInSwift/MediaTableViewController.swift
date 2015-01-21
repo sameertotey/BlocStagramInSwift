@@ -11,8 +11,8 @@ import UIKit
 let cellReuseIdentifier = "mediaCell"
 
 class MediaTableViewController: UITableViewController {
-    var images = [UIImage]()
     
+    lazy var mediaItems = DataSource.sharedInstance().mediaItems
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +23,6 @@ class MediaTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        for index in 0...9 {
-            let image = UIImage(named: "\(index).jpg")
-            if let newImage = image {
-                images.append(newImage)
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,7 +41,7 @@ class MediaTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return images.count
+        return mediaItems.count
     }
 
     
@@ -55,13 +49,15 @@ class MediaTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier, forIndexPath: indexPath) as MediaTableViewCell
 
         // Configure the cell...
-        cell.mediaCellImageView.image = images[indexPath.row]
+//        cell.mediaCellImageView.image = images[indexPath.row]
+        cell.imageView!.image = mediaItems[indexPath.row].image
+        
         return cell
     }
     
     override func tableView(tableView: UITableView,
         heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-            let image = images[indexPath.row]
+            let image = mediaItems[indexPath.row].image!
             return (CGRectGetWidth(self.view.frame) / image.size.width) * image.size.height
     }
     

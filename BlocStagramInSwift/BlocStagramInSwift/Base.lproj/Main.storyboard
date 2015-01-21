@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="w2D-jj-Qc8">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Media Table View Controller-->
@@ -18,21 +17,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dcW-AY-Jbt" id="84T-hi-lut">
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DM0-dX-NKa">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="35.5"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="DM0-dX-NKa" secondAttribute="bottom" id="2Kp-B7-0C6"/>
-                                        <constraint firstAttribute="trailing" secondItem="DM0-dX-NKa" secondAttribute="trailing" id="E93-zx-DDd"/>
-                                        <constraint firstItem="DM0-dX-NKa" firstAttribute="leading" secondItem="84T-hi-lut" secondAttribute="leading" id="TFB-uf-9EQ"/>
-                                        <constraint firstItem="DM0-dX-NKa" firstAttribute="top" secondItem="84T-hi-lut" secondAttribute="top" id="goa-lS-dzo"/>
-                                    </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="mediaCellImageView" destination="DM0-dX-NKa" id="5RK-09-q7h"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -9,8 +9,6 @@
 import UIKit
 
 class MediaTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var mediaCellImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
