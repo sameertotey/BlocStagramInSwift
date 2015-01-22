@@ -30,6 +30,7 @@
 		0528030C1A6F610400FF44BE /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0528030B1A6F610400FF44BE /* Media.swift */; };
 		0528030E1A6F620100FF44BE /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0528030D1A6F620100FF44BE /* Comment.swift */; };
 		052803101A6F62F300FF44BE /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0528030F1A6F62F300FF44BE /* DataSource.swift */; };
+		05BCC2391A70A53500382D83 /* MediaTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05BCC2371A70A53500382D83 /* MediaTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		0528030B1A6F610400FF44BE /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		0528030D1A6F620100FF44BE /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		0528030F1A6F62F300FF44BE /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		05BCC2371A70A53500382D83 /* MediaTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				052802D11A6F183A00FF44BE /* ViewController.swift */,
 				052802D31A6F183A00FF44BE /* Main.storyboard */,
 				052803041A6F1B3400FF44BE /* MediaTableViewController.swift */,
+				05BCC2371A70A53500382D83 /* MediaTableViewCell.xib */,
 				052803061A6F2EF900FF44BE /* MediaTableViewCell.swift */,
 				0528030A1A6F60EB00FF44BE /* Model */,
 				052802D61A6F183A00FF44BE /* Images.xcassets */,
@@ -268,6 +271,7 @@
 				052802FA1A6F1A6700FF44BE /* 1.jpg in Resources */,
 				052802FB1A6F1A6700FF44BE /* 2.jpg in Resources */,
 				052802FC1A6F1A6700FF44BE /* 3.jpg in Resources */,
+				05BCC2391A70A53500382D83 /* MediaTableViewCell.xib in Resources */,
 				052803001A6F1A6700FF44BE /* 7.jpg in Resources */,
 				052803021A6F1A6700FF44BE /* 9.jpg in Resources */,
 				052802DA1A6F183A00FF44BE /* LaunchScreen.xib in Resources */,
@@ -491,6 +495,7 @@
 				052802EB1A6F183A00FF44BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		052802EC1A6F183A00FF44BE /* Build configuration list for PBXNativeTarget "BlocStagramInSwiftTests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +504,7 @@
 				052802EE1A6F183A00FF44BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

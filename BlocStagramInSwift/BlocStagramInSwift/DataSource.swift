@@ -39,6 +39,7 @@ class DataSource: NSObject {
                 let media = Media()
                 media.image = newImage
                 media.user = randomUser()
+                media.caption = randomStringOfLength(10)
                 let commentCount = arc4random_uniform(20)
                 for i in 0..<commentCount {
                     let comment = randomComment()
@@ -62,7 +63,7 @@ class DataSource: NSObject {
     func randomComment() -> Comment {
         let comment = Comment()
         comment.from = randomUser()
-        let wordCount = arc4random_uniform(20)
+        let wordCount = arc4random_uniform(20) + 1
         
         for i in 0..<wordCount {
             let word = randomStringOfLength(12)

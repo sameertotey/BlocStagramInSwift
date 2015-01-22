@@ -23,6 +23,9 @@ class MediaTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+        let cellNib = UINib(nibName: "MediaTableViewCell", bundle: NSBundle.mainBundle())
+        self.tableView.registerNib(cellNib, forCellReuseIdentifier: cellReuseIdentifier)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,15 +53,15 @@ class MediaTableViewController: UITableViewController {
 
         // Configure the cell...
 //        cell.mediaCellImageView.image = images[indexPath.row]
-        cell.imageView!.image = mediaItems[indexPath.row].image
+        cell.mediaItem = mediaItems[indexPath.row]
         
         return cell
     }
     
     override func tableView(tableView: UITableView,
         heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-            let image = mediaItems[indexPath.row].image!
-            return (CGRectGetWidth(self.view.frame) / image.size.width) * image.size.height
+          let item = mediaItems[indexPath.row]
+          return MediaTableViewCell.heightForMediaItem(item, width: CGRectGetWidth(self.view.bounds))
     }
     
     /*
