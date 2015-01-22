@@ -15,14 +15,18 @@ class MediaTableViewCell: UITableViewCell {
             mediaImageView.image = mediaItem.image;
             usernameAndCaptionLabel.attributedText = usernameAndCaptionString()
             commentLabel.attributedText = commentString()
-            println("commentLabel: \(commentLabel.text!)")
+            imageHeightConstraint.constant = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(contentView.bounds)
         }
     }
     
     @IBOutlet weak var mediaImageView: UIImageView!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var usernameAndCaptionLabel: UILabel!
+    @IBOutlet weak var usernameAndCaptionLabelHeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var commentLabelHeightConstraint: NSLayoutConstraint!
     
     struct Styling {
         static let lightFont = UIFont(name:"HelveticaNeue-Thin", size: 11)
@@ -51,18 +55,19 @@ class MediaTableViewCell: UITableViewCell {
         let layoutCell = NSBundle.mainBundle().loadNibNamed("MediaTableViewCell", owner: self, options: nil)[0] as MediaTableViewCell
 
         
-        // Set it to the given width, and the maximum possible height
-        layoutCell.frame = CGRectMake(0, 0, width, CGFloat.max)
-        
         // Give it the media item
         layoutCell.mediaItem = mediaItem
         
+        layoutCell.frame = CGRectMake(0, 0, width, CGRectGetHeight(layoutCell.frame));
+
         // Make it adjust the image view and labels
-        layoutCell.layoutSubviews()
+        layoutCell.setNeedsLayout()
+        layoutCell.layoutIfNeeded()
         
         // The height will be wherever the bottom of the comments label is 
-        return CGRectGetMaxY(layoutCell.commentLabel.frame)
-        
+        let height = CGRectGetMaxY(layoutCell.commentLabel.frame)
+        println("height = \(height)")
+        return height
     }
     
     override func awakeFromNib() {
@@ -112,49 +117,35 @@ class MediaTableViewCell: UITableViewCell {
         return commentString
     }
     
-//    - (CGSize) sizeOfString:(NSAttributedString *)string {
-//    CGSize maxSize = CGSizeMake(CGRectGetWidth(self.contentView.bounds) - 40, 0.0);
-//    CGRect sizeRect = [string boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
-//    sizeRect.size.height += 20;
-//    sizeRect = CGRectIntegral(sizeRect);
-//    return sizeRect.size;
+//    func sizeOfString(string: NSAttributedString) -> CGSize {
+//        let maxSize = CGSizeMake(CGRectGetWidth(self.contentView.bounds) - 40, 0.0)
+//        var sizeRect = string.boundingRectWithSize(maxSize, options: .UsesLineFragmentOrigin, context: nil)
+//        sizeRect.size.height = sizeRect.size.height + CGFloat(20)
+//        sizeRect = CGRectIntegral(sizeRect)
+//        
+//        return sizeRect.size
 //    }
     
-    func sizeOfString(string: NSAttributedString) -> CGSize {
-        let maxSize = CGSizeMake(CGRectGetWidth(self.contentView.bounds) - 40, 0.0)
-        var sizeRect = string.boundingRectWithSize(maxSize, options: .UsesLineFragmentOrigin, context: nil)
-        sizeRect.size.height = sizeRect.size.height + CGFloat(20)
-        sizeRect = CGRectIntegral(sizeRect)
-        
-        return sizeRect.size
-    }
-    
-//    - (void) layoutSubviews {
-//    [super layoutSubviews];
-//    
-//    CGFloat imageHeight = self.mediaItem.image.size.height / self.mediaItem.image.size.width * CGRectGetWidth(self.contentView.bounds);
-//    self.mediaImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.bounds), imageHeight);
-//    
-//    CGSize sizeOfUsernameAndCaptionLabel = [self sizeOfString:self.usernameAndCaptionLabel.attributedText];
-//    self.usernameAndCaptionLabel.frame = CGRectMake(0, CGRectGetMaxY(self.mediaImageView.frame), CGRectGetWidth(self.contentView.bounds), sizeOfUsernameAndCaptionLabel.height);
-//    
-//    CGSize sizeOfCommentLabel = [self sizeOfString:self.commentLabel.attributedText];
-//    self.commentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.usernameAndCaptionLabel.frame), CGRectGetWidth(self.bounds), sizeOfCommentLabel.height);
-//    
-//    // Hide the line between cells
-//    self.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(self.bounds));
-//    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let imageHeight = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(self.contentView.bounds)
-        self.mediaImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.bounds), imageHeight)
         
-        let sizeOfUsernameAndCaptionLabel = sizeOfString(self.usernameAndCaptionLabel.attributedText)
-        self.usernameAndCaptionLabel.frame = CGRectMake(0, CGRectGetMaxY(self.mediaImageView.frame), CGRectGetWidth(self.bounds), sizeOfUsernameAndCaptionLabel.height)
+//        let imageHeight = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(self.contentView.bounds)
+//        self.mediaImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.bounds), imageHeight)
+//        
+//        let sizeOfUsernameAndCaptionLabel = sizeOfString(self.usernameAndCaptionLabel.attributedText)
+//        self.usernameAndCaptionLabel.frame = CGRectMake(0, CGRectGetMaxY(self.mediaImageView.frame), CGRectGetWidth(self.bounds), sizeOfUsernameAndCaptionLabel.height)
+//        
+//        let sizeOfCommentLabel = sizeOfString(self.commentLabel.attributedText)
+//        self.commentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.usernameAndCaptionLabel.frame), CGRectGetWidth(self.bounds), sizeOfCommentLabel.height)
         
-        let sizeOfCommentLabel = sizeOfString(self.commentLabel.attributedText)
-        self.commentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.usernameAndCaptionLabel.frame), CGRectGetWidth(self.bounds), sizeOfCommentLabel.height)
+        // Before layout, calculate the intrinsic size of the labels (the size they "want" to be), and add 20 to the height for some vertical padding.
+        let maxSize = CGSizeMake(CGRectGetWidth(self.bounds), CGFloat.max);
+        let usernameLabelSize = usernameAndCaptionLabel.sizeThatFits(maxSize)
+        let commentLabelSize = commentLabel.sizeThatFits(maxSize)
+        
+        self.usernameAndCaptionLabelHeightConstraint.constant = usernameLabelSize.height;
+        self.commentLabelHeightConstraint.constant = commentLabelSize.height;
         
         // Hide the line between cells
         self.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(self.bounds));
