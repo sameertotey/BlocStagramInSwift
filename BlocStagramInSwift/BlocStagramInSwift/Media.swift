@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class Media: NSObject {
     var idNumber: String
@@ -21,4 +22,29 @@ class Media: NSObject {
         super.init()
     }
 
+    convenience init(mediaDictionary: NSDictionary) {
+        self.init()
+        if let idNumberP = mediaDictionary["id"] as? String {
+            idNumber = idNumberP
+        }
+    
+        user = User(userDictionary: mediaDictionary["user"] as NSDictionary)
+        
+        let standardResolutionImageURLString = ((mediaDictionary["images"]as NSDictionary)["standard_resolution"] as NSDictionary)["url"] as String!
+        if let standardResolutionImageURL = NSURL(string: standardResolutionImageURLString) {
+            mediaURL = standardResolutionImageURL
+        }
+        
+        if let captionDictionary = mediaDictionary["caption"] as? NSDictionary {
+            caption = captionDictionary["text"] as String?
+        }
+        
+        for commentDictionary in ((mediaDictionary["comments"] as NSDictionary)["data"] as NSArray) {
+            let comment = Comment(commentDictionary: commentDictionary as NSDictionary)
+            comments.append(comment)
+        }
+
+    }
+
+    
 }

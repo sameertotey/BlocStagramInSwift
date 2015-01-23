@@ -18,4 +18,13 @@ class Comment: NSObject {
         super.init()
     }
 
+    convenience init(commentDictionary: NSDictionary) {
+        self.init()
+        if let idNumberP = commentDictionary["id"] as? String {
+            idNumber = idNumberP
+        }
+        text = commentDictionary["text"] as? String
+        from = User(userDictionary: commentDictionary["from"] as NSDictionary)
+    }
+
 }
