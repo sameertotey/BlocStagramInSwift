@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Foundation
 
 class DataSource: NSObject {
     
-    var mediaItems = [Media]()
+    dynamic var mediaItems = [Media]()
     
     // The sharedInstance class function will create and return the same instance of DataSource, directly calling the initializer will still create a new instance
     struct SharedInstanceStore {
@@ -32,8 +33,37 @@ class DataSource: NSObject {
         addRandomData()
     }
     
+     //MARK: - Key/Value Observing
+    
+    func countOfMediaItems() -> Int {
+        return mediaItems.count;
+    }
+    
+    func objectInMediaItemsAtIndex (index: Int) -> Media {
+        return mediaItems[index] 
+    }
+    
+    func insertObject(object: Media, inMediaItemsAtIndex index:Int) {
+        mediaItems.insert(object, atIndex: index)
+    }
+    
+    func removeObjectFromMediaItemsAtIndex(index: Int) {
+        mediaItems.removeAtIndex(index)
+    }
+    
+    func replaceObjectInMediaItemsAtIndex(index: Int, withObject object: Media) {
+        mediaItems.removeAtIndex(index)
+        mediaItems.insert(object, atIndex: index)
+    }
+    
+    func deleteMediaItem(item: Media) {
+        var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems") as NSMutableArray
+        mutableArrayWithKVO.removeObject(item)
+        
+    }
+    
     func addRandomData() {
-        for i in 0...9 {
+        for i in 1...10 {
             let image = UIImage(named: "\(i).jpg")
             if let newImage = image {
                 let media = Media()
