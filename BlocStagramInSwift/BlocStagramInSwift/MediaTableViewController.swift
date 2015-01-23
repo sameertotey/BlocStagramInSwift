@@ -32,7 +32,10 @@ class MediaTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         let cellNib = UINib(nibName: "MediaTableViewCell", bundle: NSBundle.mainBundle())
-        self.tableView.registerNib(cellNib, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: cellReuseIdentifier)
+        
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: "refreshControlDidFire:", forControlEvents: .ValueChanged)
         
         DataSource.sharedInstance().addObserver(self, forKeyPath: "mediaItems", options: .New | .Old, context: &myContext)
         
@@ -45,6 +48,12 @@ class MediaTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func refreshControlDidFire(sender: UIRefreshControl) {
+        DataSource.sharedInstance().requestNewItemsWithCompletionHandler {error in
+            sender.endRefreshing()
+            }
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject: AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -171,5 +180,26 @@ class MediaTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func infiniteScrollIfNecessary() {
+        var visiblePaths = tableView.indexPathsForVisibleRows()
+        
+        
+        if let bottomIndexPath = visiblePaths!.removeLast() as? NSIndexPath {
+    
+            if (bottomIndexPath.row == DataSource.sharedInstance().mediaItems.count - 1) {
+            // The very last cell is on screen
+                DataSource.sharedInstance().requestOldItemsWithCompletionHandler{error in
+                    println("infinite scroll")
+                }
+            }
+        }
+    }
+    
+    // MARK: - UIScrollViewDelegate
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        infiniteScrollIfNecessary()
+    }
 
 }

@@ -13,6 +13,9 @@ class DataSource: NSObject {
     
     dynamic var mediaItems = [Media]()
     
+    var isRefreshing = false
+    var isLoadingOlderItems = false
+    
     // The sharedInstance class function will create and return the same instance of DataSource, directly calling the initializer will still create a new instance
     struct SharedInstanceStore {
         static var once: dispatch_once_t = 0
@@ -62,6 +65,40 @@ class DataSource: NSObject {
         
     }
     
+    func requestNewItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
+        if !self.isRefreshing {
+            self.isRefreshing = true;
+            let media = Media()
+            media.user = randomUser()
+            media.image = UIImage(named: "10.jpg")!
+            media.caption = randomStringOfLength(10)
+            
+            var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems") as NSMutableArray
+            mutableArrayWithKVO.insertObject(media, atIndex:0)
+
+            self.isRefreshing = false
+                
+            completionHandler(error:nil);
+        }
+    }
+    
+    func requestOldItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
+        if !self.isLoadingOlderItems {
+            self.isLoadingOlderItems = true;
+            let media = Media()
+            media.user = randomUser()
+            media.image = UIImage(named: "1.jpg")!
+            media.caption = randomStringOfLength(10)
+            
+            var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems") as NSMutableArray
+            mutableArrayWithKVO.addObject(media)
+            
+            self.isLoadingOlderItems = false
+            
+            completionHandler(error:nil);
+        }
+    }
+
     func addRandomData() {
         for i in 1...10 {
             let image = UIImage(named: "\(i).jpg")
