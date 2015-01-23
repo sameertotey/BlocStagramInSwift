@@ -184,13 +184,14 @@ class MediaTableViewController: UITableViewController {
     func infiniteScrollIfNecessary() {
         var visiblePaths = tableView.indexPathsForVisibleRows()
         
-        
-        if let bottomIndexPath = visiblePaths!.removeLast() as? NSIndexPath {
+        if visiblePaths?.count > 0 {
+            if let bottomIndexPath = visiblePaths?.removeLast() as? NSIndexPath {
     
-            if (bottomIndexPath.row == DataSource.sharedInstance().mediaItems.count - 1) {
-            // The very last cell is on screen
-                DataSource.sharedInstance().requestOldItemsWithCompletionHandler{error in
-                    println("infinite scroll")
+                if (bottomIndexPath.row == DataSource.sharedInstance().mediaItems.count - 1) {
+                    // The very last cell is on screen
+                    DataSource.sharedInstance().requestOldItemsWithCompletionHandler{error in
+                        println("infinite scroll")
+                    }
                 }
             }
         }

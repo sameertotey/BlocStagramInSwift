@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Media Table View Controller-->
+        <!--BlocStagram-->
         <scene sceneID="NDc-yg-PRW">
             <objects>
-                <tableViewController id="z4a-7L-rCn" customClass="MediaTableViewController" customModule="BlocStagramInSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MediaTableViewController" title="BlocStagram" id="z4a-7L-rCn" customClass="MediaTableViewController" customModule="BlocStagramInSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Rag-7h-CLx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,7 +21,44 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oNp-Rv-4Vv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1214" y="416"/>
+            <point key="canvasLocation" x="1888" y="429"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="QHD-bn-4hk">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" title="Login" id="uC3-Xh-YBc" customClass="LoginViewController" customModule="BlocStagramInSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wb9-wK-45L"/>
+                        <viewControllerLayoutGuide type="bottom" id="hwt-Ec-dDz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Eyz-y9-Bvp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MJj-MV-ot5">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="uC3-Xh-YBc" id="Yrk-Iu-cw2"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MJj-MV-ot5" firstAttribute="top" secondItem="Eyz-y9-Bvp" secondAttribute="top" id="7D6-Ah-SUV"/>
+                            <constraint firstItem="MJj-MV-ot5" firstAttribute="leading" secondItem="Eyz-y9-Bvp" secondAttribute="leading" id="eWs-f6-BAd"/>
+                            <constraint firstItem="MJj-MV-ot5" firstAttribute="bottom" secondItem="hwt-Ec-dDz" secondAttribute="top" id="zAR-Nc-i2J"/>
+                            <constraint firstAttribute="trailing" secondItem="MJj-MV-ot5" secondAttribute="trailing" id="zp7-zZ-nxi"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="tgv-x0-hCS"/>
+                    <connections>
+                        <outlet property="webView" destination="MJj-MV-ot5" id="iop-1P-htD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Bk-QI-o3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1143" y="462"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wwl-ym-tOM">
@@ -34,7 +71,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="z4a-7L-rCn" kind="relationship" relationship="rootViewController" id="bjO-X2-S5q"/>
+                        <segue destination="uC3-Xh-YBc" kind="relationship" relationship="rootViewController" id="31Q-T4-iOk"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Kq-ei-3WX" userLabel="First Responder" sceneMemberID="firstResponder"/>

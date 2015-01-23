@@ -9,17 +9,23 @@
 import UIKit
 import Foundation
 
+
 class DataSource: NSObject {
     
     dynamic var mediaItems = [Media]()
     
+    
     var isRefreshing = false
     var isLoadingOlderItems = false
+    
+    var accessToken = ""
+
     
     // The sharedInstance class function will create and return the same instance of DataSource, directly calling the initializer will still create a new instance
     struct SharedInstanceStore {
         static var once: dispatch_once_t = 0
         static var instance: DataSource?
+        static let instagramClientID = "f88ae7fd0c894b308cd15ccdcb7a19c5"
     }
     
     class func sharedInstance() -> DataSource {
@@ -33,7 +39,15 @@ class DataSource: NSObject {
         super.init()
         // We can prevent more than one instances by using the following assert
 //        assert(SharedInstanceStore.instance == nil, "Singleton already initialized!")
-        addRandomData()
+        registerForAccessTokenNotification()
+    }
+    
+    func registerForAccessTokenNotification() {
+        NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
+            self.accessToken = note.object as String
+            // Got the token populate the initial data
+            self.populateData(parameters: nil)
+        }
     }
     
      //MARK: - Key/Value Observing
@@ -68,13 +82,6 @@ class DataSource: NSObject {
     func requestNewItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
         if !self.isRefreshing {
             self.isRefreshing = true;
-            let media = Media()
-            media.user = randomUser()
-            media.image = UIImage(named: "10.jpg")!
-            media.caption = randomStringOfLength(10)
-            
-            var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems") as NSMutableArray
-            mutableArrayWithKVO.insertObject(media, atIndex:0)
 
             self.isRefreshing = false
                 
@@ -85,72 +92,52 @@ class DataSource: NSObject {
     func requestOldItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
         if !self.isLoadingOlderItems {
             self.isLoadingOlderItems = true;
-            let media = Media()
-            media.user = randomUser()
-            media.image = UIImage(named: "1.jpg")!
-            media.caption = randomStringOfLength(10)
-            
-            var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems") as NSMutableArray
-            mutableArrayWithKVO.addObject(media)
-            
+              
             self.isLoadingOlderItems = false
             
             completionHandler(error:nil);
         }
     }
 
-    func addRandomData() {
-        for i in 1...10 {
-            let image = UIImage(named: "\(i).jpg")
-            if let newImage = image {
-                let media = Media()
-                media.image = newImage
-                media.user = randomUser()
-                media.caption = randomStringOfLength(10)
-                let commentCount = arc4random_uniform(20)
-                for i in 0..<commentCount {
-                    let comment = randomComment()
-                    media.comments.append(comment)
+    func populateData(#parameters: NSDictionary?) {
+        if (accessToken != "") {
+            // only try to get the data if there's an access token
+    
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+                // do the network request in the background, so the UI doesn't lock up
+    
+                var urlString = "https://api.instagram.com/v1/users/self/feed?access_token=\(self.accessToken)"
+                
+                if let myParameters = parameters {
+                    for (key,  value) in myParameters {
+                        // for example, if dictionary contains {count: 50}, append `&count=50` to the URL
+                        urlString += "&\(key)=\(value)"
+                    }
                 }
-                mediaItems.append(media)
+    
+                if let url = NSURL(string: urlString) {
+                    let request = NSURLRequest(URL: url)
+    
+                    var response: AutoreleasingUnsafeMutablePointer<NSURLResponse?> = nil
+                    var webError: NSErrorPointer = nil
+                    let responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse:response, error:webError)
+    
+                    var jsonError: NSErrorPointer = nil
+                    let feedDictionary = NSJSONSerialization.JSONObjectWithData(responseData!, options:NSJSONReadingOptions(0), error:jsonError) as? NSDictionary
+    
+                    if  let receivedDictionary = feedDictionary {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            // done networking, go back on the main thread
+                            self.parseDataFromFeedDictionary(receivedDictionary, fromRequestWithParameters:parameters)
+                            }
+                    }
+                }
             }
         }
     }
     
-    func randomUser() -> User {
-        let user = User()
-        user.userName =  randomStringOfLength(arc4random_uniform(10))
-        
-        let firstName = randomStringOfLength(arc4random_uniform(7))
-        let lastName = randomStringOfLength(arc4random_uniform(12))
-        user.fullName = "\(firstName) \(lastName))"
-        return user
+    func parseDataFromFeedDictionary( feedDictionary: NSDictionary, fromRequestWithParameters parameters: NSDictionary?) {
+        NSLog("%@", feedDictionary);
     }
     
-    func randomComment() -> Comment {
-        let comment = Comment()
-        comment.from = randomUser()
-        let wordCount = arc4random_uniform(20) + 1
-        
-        for i in 0..<wordCount {
-            let word = randomStringOfLength(12)
-            if let currentText = comment.text {
-                comment.text = currentText + " " + word
-            } else {
-                comment.text = word + " "
-            }
-        }
-        return comment
-    }
-    
-    func randomStringOfLength(num:UInt32) -> String {
-        var string = ""
-        let alphabets = ["a", "b", "c", "d", "e", "f", "g", "h","i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-        
-        for index in 0..<num {
-            let r = Int(arc4random_uniform(UInt32(alphabets.count)))
-            string = string + alphabets[r]
-        }
-        return string
-    }
 }
