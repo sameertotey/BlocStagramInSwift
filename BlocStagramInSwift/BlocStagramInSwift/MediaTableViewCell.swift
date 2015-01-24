@@ -72,15 +72,33 @@ class MediaTableViewCell: UITableViewCell {
         // Initialization code
     }
 
+    override func setHighlighted(highlighted: Bool, animated:Bool) {
+        super.setHighlighted(false, animated:animated)
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+        super.setSelected(false, animated: animated)
 
         // Configure the view for the selected state
     }
 
     func usernameAndCaptionString() -> NSAttributedString {
         let usernameFontSize = CGFloat(15)
-        let baseString = "\(self.mediaItem.user!.userName!) \(self.mediaItem.caption!)"
+        
+        var baseString = ""
+        if let username = mediaItem.user?.userName {
+            if let caption = mediaItem.caption {
+                baseString = "\(username) \(caption)"
+            } else {
+                baseString = "\(username)"
+            }
+        } else {
+            if let caption = mediaItem.caption {
+                baseString = "\(caption)"
+            }
+        }
+        
+//        let baseString = "\(self.mediaItem.user?.userName?) \(self.mediaItem.caption?)"
         
         // Make an attributed string, with the "username" bold
 
@@ -144,7 +162,13 @@ class MediaTableViewCell: UITableViewCell {
         self.usernameAndCaptionLabelHeightConstraint.constant = usernameLabelSize.height;
         self.commentLabelHeightConstraint.constant = commentLabelSize.height;
         
-        imageHeightConstraint.constant = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(contentView.frame)
+//        imageHeightConstraint.constant = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(contentView.frame)
+        if mediaItem.image != nil {
+            imageHeightConstraint.constant = mediaItem.image!.size.height / mediaItem.image!.size.width * CGRectGetWidth(contentView.bounds);
+        } else {
+            imageHeightConstraint.constant = 0;
+        }
+        
         // Hide the line between cells
         self.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(self.bounds));
         

@@ -170,6 +170,15 @@ class MediaTableViewController: UITableViewController {
         return true
     }
     */
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let item = DataSource.sharedInstance().mediaItems[indexPath.row];
+        if item.image != nil {
+            return 350;
+        } else {
+            return 150;
+        }
+    }
 
     /*
     // MARK: - Navigation

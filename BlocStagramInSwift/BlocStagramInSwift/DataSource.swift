@@ -17,6 +17,7 @@ class DataSource: NSObject {
     
     var isRefreshing = false
     var isLoadingOlderItems = false
+    var thereAreNoMoreOlderMessages = false
     
     var accessToken = ""
 
@@ -46,7 +47,13 @@ class DataSource: NSObject {
         NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
             self.accessToken = note.object as String
             // Got the token populate the initial data
-            self.populateData(parameters: nil)
+            self.populateData(parameters: nil) { error in
+                println("Completed initial population")
+                for mediaItem in self.mediaItems  {
+                    self.downloadImageFor(mediaItem: mediaItem)
+                }
+                println("Completed images")
+            }
         }
     }
     
@@ -80,26 +87,38 @@ class DataSource: NSObject {
     }
     
     func requestNewItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
+        thereAreNoMoreOlderMessages = false
         if !self.isRefreshing {
             self.isRefreshing = true;
 
-            self.isRefreshing = false
-                
-            completionHandler(error:nil);
+            if let minID = mediaItems.first?.idNumber {
+                var parameters = ["min_id": minID]
+            
+                populateData(parameters: parameters)  { error in
+                    self.isRefreshing = false
+                    completionHandler(error:nil)
+                }
+            }
         }
     }
     
     func requestOldItemsWithCompletionHandler(completionHandler:(error: NSError?) -> ()) {
-        if !self.isLoadingOlderItems {
+        if !self.isLoadingOlderItems && !thereAreNoMoreOlderMessages {
             self.isLoadingOlderItems = true;
-              
-            self.isLoadingOlderItems = false
             
-            completionHandler(error:nil);
+            if let maxID = mediaItems.last?.idNumber {
+                var parameters = ["max_id": maxID]
+                
+                populateData(parameters: parameters)  { error in
+                    self.isLoadingOlderItems = false
+                    completionHandler(error:nil)
+                }
+            }
+            
         }
     }
 
-    func populateData(#parameters: NSDictionary?) {
+    func populateData(#parameters: NSDictionary?, completionHandler:(error: NSError?) -> ()) {
         if (accessToken != "") {
             // only try to get the data if there's an access token
     
@@ -119,17 +138,29 @@ class DataSource: NSObject {
                     let request = NSURLRequest(URL: url)
     
                     var response: AutoreleasingUnsafeMutablePointer<NSURLResponse?> = nil
-                    var webError: NSErrorPointer = nil
-                    let responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse:response, error:webError)
-    
-                    var jsonError: NSErrorPointer = nil
-                    let feedDictionary = NSJSONSerialization.JSONObjectWithData(responseData!, options:NSJSONReadingOptions(0), error:jsonError) as? NSDictionary
-    
-                    if  let receivedDictionary = feedDictionary {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            // done networking, go back on the main thread
-                            self.parseDataFromFeedDictionary(receivedDictionary, fromRequestWithParameters:parameters)
+                    var webError: NSError?
+                    let responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse:response, error:&webError)
+                    
+                    if responseData != nil {
+                        var jsonError: NSError?
+                        let feedDictionary = NSJSONSerialization.JSONObjectWithData(responseData!, options:NSJSONReadingOptions(0), error:&jsonError) as? NSDictionary
+
+                        if feedDictionary != nil {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                // done networking, go back on the main thread
+                                self.parseDataFromFeedDictionary(feedDictionary!, fromRequestWithParameters:parameters)
+                                completionHandler(error: nil)
                             }
+                        } else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completionHandler(error:jsonError)
+                                }
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                        // done networking, go back on the main thread
+                            completionHandler(error:webError)
+                        }
                     }
                 }
             }
@@ -137,7 +168,66 @@ class DataSource: NSObject {
     }
     
     func parseDataFromFeedDictionary( feedDictionary: NSDictionary, fromRequestWithParameters parameters: NSDictionary?) {
-        NSLog("%@", feedDictionary);
+//        NSLog("%@", feedDictionary);
+        let mediaArray = feedDictionary["data"] as NSArray
+        
+        var tmpMediaItems = [Media]()
+        for mediaDictionary in mediaArray  {
+            let mediaItem = Media(mediaDictionary: mediaDictionary as NSDictionary)
+            tmpMediaItems.append(mediaItem)
+//            downloadImageFor(mediaItem: mediaItem)
+        }
+        
+        var mutableArrayWithKVO = mutableArrayValueForKey("mediaItems")
+        
+        if let Uparameters = parameters {
+            if Uparameters["min_id"] != nil {
+                // This was a pull-to-refresh request
+            
+                let rangeOfIndexes = NSMakeRange(0, tmpMediaItems.count);
+                let indexSetOfNewObjects = NSIndexSet(indexesInRange:rangeOfIndexes)
+            
+                mutableArrayWithKVO.insertObjects(tmpMediaItems, atIndexes:indexSetOfNewObjects)
+            } else if Uparameters["max_id"] != nil {
+                // This was an infinite scroll request
+                if tmpMediaItems.count == 0 {
+                    // disable infinite scroll, since there are no more older messages
+                    thereAreNoMoreOlderMessages = true
+                }
+                mutableArrayWithKVO.addObjectsFromArray(tmpMediaItems)
+            }
+        } else {
+            willChangeValueForKey("mediaItems")
+            self.mediaItems = tmpMediaItems;
+            didChangeValueForKey("mediaItems")
+        }
     }
     
+    func downloadImageFor(#mediaItem: Media) {
+        if (mediaItem.mediaURL != nil && mediaItem.image == nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                let request = NSURLRequest(URL: mediaItem.mediaURL!)
+                var response: AutoreleasingUnsafeMutablePointer<NSURLResponse?> = nil
+                var webError: NSError?
+    
+                let imageData = NSURLConnection.sendSynchronousRequest(request, returningResponse:response, error:&webError)
+    
+                if (imageData != nil) {
+                    if let image = UIImage(data: imageData!) {
+                        mediaItem.image = image
+                    }
+        
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let mutableArrayWithKVO = self.mutableArrayValueForKey("mediaItems")
+                        let index = mutableArrayWithKVO.indexOfObject(mediaItem)
+                        mutableArrayWithKVO.replaceObjectAtIndex(index, withObject:mediaItem)
+                    }
+                } else {
+                    if let error = webError {
+                        NSLog("Error downloading image: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
 }
