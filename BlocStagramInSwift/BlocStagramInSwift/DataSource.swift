@@ -8,6 +8,8 @@
 
 import UIKit
 import Foundation
+import KeychainAccess
+import Alamofire
 
 
 class DataSource: NSObject {
@@ -44,15 +46,53 @@ class DataSource: NSObject {
     }
     
     func registerForAccessTokenNotification() {
-        NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
-            self.accessToken = note.object as String
-            // Got the token populate the initial data
-            self.populateData(parameters: nil) { error in
-                println("Completed initial population")
-                for mediaItem in self.mediaItems  {
-                    self.downloadImageFor(mediaItem: mediaItem)
+        let keychain = Keychain(service: "com.sameertotey.BlocStagramInSwift")
+        let accessToken = keychain["access token"]
+        
+        if accessToken == nil {
+            NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
+                self.accessToken = note.object as String
+                keychain["access token"] = self.accessToken
+                // Got the token populate the initial data
+                self.populateData(parameters: nil) { error in
+                    println("Completed initial population")
+                    println("Completed images")
                 }
-                println("Completed images")
+            }
+        } else {
+            self.accessToken = accessToken!
+            
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                
+                let fullURL = self.urlForCache("mediaItems")
+                if let mediaItemsData = NSData(contentsOfURL: fullURL) {
+                    let storedMediaItems = NSKeyedUnarchiver.unarchiveObjectWithData(mediaItemsData) as NSArray
+
+                    dispatch_async(dispatch_get_main_queue()) {
+                        if storedMediaItems.count > 0 {
+                            self.willChangeValueForKey("mediaItems")
+                            self.mediaItems = storedMediaItems as [Media]
+                            self.didChangeValueForKey("mediaItems")
+                        } else {
+                            self.populateData(parameters: nil) { error in
+                                println("Completed initial population")
+                                for mediaItem in self.mediaItems  {
+                                    self.downloadImageFor(mediaItem: mediaItem)
+                                }
+                                println("Completed images")
+                            }
+                        }
+                    }
+                } else {
+                    self.populateData(parameters: nil) { error in
+                        println("Completed initial population")
+                        for mediaItem in self.mediaItems  {
+                            self.downloadImageFor(mediaItem: mediaItem)
+                        }
+                        println("Completed images")
+                    }
+                }
             }
         }
     }
@@ -175,6 +215,7 @@ class DataSource: NSObject {
         for mediaDictionary in mediaArray  {
             let mediaItem = Media(mediaDictionary: mediaDictionary as NSDictionary)
             tmpMediaItems.append(mediaItem)
+            // we cannot download the images here, they have to be done when the mediaItems have been updated
 //            downloadImageFor(mediaItem: mediaItem)
         }
         
@@ -201,6 +242,28 @@ class DataSource: NSObject {
             self.mediaItems = tmpMediaItems;
             didChangeValueForKey("mediaItems")
         }
+        for mediaItem in tmpMediaItems  {
+            self.downloadImageFor(mediaItem: mediaItem)
+        }
+
+        if tmpMediaItems.count > 0 {
+            // Write the changes to disk
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                let numberOfItemsToSave = min(self.mediaItems.count, 50)
+                let mediaItemsToSave = Array(self.mediaItems[0..<numberOfItemsToSave])
+                
+                let fullURL = self.urlForCache("mediaItems")
+                let mediaItemData = NSKeyedArchiver.archivedDataWithRootObject(mediaItemsToSave)
+                
+                var dataError: NSError?
+                let wroteSuccessfully = mediaItemData.writeToURL(fullURL, options: .AtomicWrite | .DataWritingFileProtectionCompleteUnlessOpen, error: &dataError)
+                if (!wroteSuccessfully) {
+                    NSLog("Couldn't write file: %@", dataError!)
+                }
+            }
+            
+        }
+        
     }
     
     func downloadImageFor(#mediaItem: Media) {
@@ -230,4 +293,16 @@ class DataSource: NSObject {
             }
         }
     }
+    
+    func applicationCacheDirectory() -> NSURL {
+        let urls = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask)
+        
+        return urls[urls.count-1] as NSURL
+    }
+    
+    func urlForCache(location: String) -> NSURL {
+        return applicationCacheDirectory().URLByAppendingPathExtension(location)
+    }
+
+
 }

@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class User: NSObject {
+class User: NSObject, NSCoding {
     var idNumber: String
     var userName: String?
     var fullName: String?
@@ -37,4 +37,19 @@ class User: NSObject {
 
     }
     
+    required init(coder aDecoder: NSCoder) {
+        idNumber = aDecoder.decodeObjectForKey("idNumber") as String
+        userName = aDecoder.decodeObjectForKey("userName") as String?
+        fullName = aDecoder.decodeObjectForKey("fullName") as String?
+        profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as NSURL?
+        profilePicture = aDecoder.decodeObjectForKey("profilePicture") as UIImage?
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(idNumber, forKey:"idNumber")
+        aCoder.encodeObject(userName, forKey:"userName")
+        aCoder.encodeObject(fullName, forKey:"fullName")
+        aCoder.encodeObject(profilePictureURL, forKey:"profilePictureURL")
+        aCoder.encodeObject(profilePicture, forKey:"profilePicture")
+    }
 }

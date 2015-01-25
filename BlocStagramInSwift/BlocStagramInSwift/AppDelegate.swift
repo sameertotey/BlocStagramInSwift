@@ -18,12 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        DataSource.sharedInstance() // create the data source (so it can receive the access token notification)
+        let dataSource = DataSource.sharedInstance() // create the data source (so it can receive the access token notification)
         
         let mediaTVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("MediaTableViewController") as MediaTableViewController;
-       
-        NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
-            let mainNavVC = self.window?.rootViewController as UINavigationController
+        let mainNavVC = self.window?.rootViewController as UINavigationController
+
+        if DataSource.sharedInstance().accessToken == "" {
+            NSNotificationCenter.defaultCenter().addObserverForName(ReceivedInstagramAccessToken, object: nil, queue: nil) { (note: NSNotification!) -> Void in
+                mainNavVC.setViewControllers([mediaTVC], animated: true)
+            }
+        } else {
             mainNavVC.setViewControllers([mediaTVC], animated: true)
         }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Comment: NSObject {
+class Comment: NSObject, NSCoding {
     var idNumber: String
     var from: User?
     var text: String?
@@ -27,4 +27,15 @@ class Comment: NSObject {
         from = User(userDictionary: commentDictionary["from"] as NSDictionary)
     }
 
+    required init(coder aDecoder: NSCoder) {
+        idNumber = aDecoder.decodeObjectForKey("idNumber") as String
+        from = aDecoder.decodeObjectForKey("from") as User?
+        text = aDecoder.decodeObjectForKey("text") as String?
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(idNumber, forKey:"idNumber")
+        aCoder.encodeObject(from, forKey:"from")
+        aCoder.encodeObject(text, forKey:"text")
+    }
 }
