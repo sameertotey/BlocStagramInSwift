@@ -12,6 +12,10 @@
 	<dict>
 		<key>5311AFE08C7BEC55943757D240D2B7E3B263D710</key>
 		<string>https://github.com/sameertotey/BlocStagramInSwift.git</string>
+		<key>67620B5EFA902936DF04070AF595B76AB0333747</key>
+		<string>https://github.com/Alamofire/Alamofire.git</string>
+		<key>AFADF01AFBA46DFD7A5AFD980110E89E8E63AACD</key>
+		<string>https://github.com/kishikawakatsumi/KeychainAccess.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>BlocStagramInSwift/BlocStagramInSwift.xcodeproj</string>
@@ -19,6 +23,10 @@
 	<dict>
 		<key>5311AFE08C7BEC55943757D240D2B7E3B263D710</key>
 		<string>../../..</string>
+		<key>67620B5EFA902936DF04070AF595B76AB0333747</key>
+		<string>../../../Alamofire/</string>
+		<key>AFADF01AFBA46DFD7A5AFD980110E89E8E63AACD</key>
+		<string>../../../KeychainAccess/</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/sameertotey/BlocStagramInSwift.git</string>
@@ -32,9 +40,33 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>67620B5EFA902936DF04070AF595B76AB0333747</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Alamofire</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>5311AFE08C7BEC55943757D240D2B7E3B263D710</string>
 			<key>IDESourceControlWCCName</key>
 			<string>BlocStagramInSwift</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AFADF01AFBA46DFD7A5AFD980110E89E8E63AACD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>KeychainAccess</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AFADF01AFBA46DFD7A5AFD980110E89E8E63AACD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>KeychainAccess</string>
 		</dict>
 	</array>
 </dict>
