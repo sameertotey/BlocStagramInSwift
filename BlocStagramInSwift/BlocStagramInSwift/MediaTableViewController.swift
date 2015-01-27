@@ -14,7 +14,9 @@ private var myContext = 0
 
 let cellReuseIdentifier = "mediaCell"
 
-class MediaTableViewController: UITableViewController {
+class MediaTableViewController: UITableViewController, MediaTableViewCellDelegate, UIViewControllerTransitioningDelegate {
+    
+    weak var lastTappedImageView: UIImageView?
     
     var mediaItems: [Media] {
         get {
@@ -125,14 +127,14 @@ class MediaTableViewController: UITableViewController {
         // Configure the cell...
 //        cell.mediaCellImageView.image = images[indexPath.row]
         cell.mediaItem = mediaItems[indexPath.row] as Media
-        
+        cell.delegate = self
         return cell
     }
     
     override func tableView(tableView: UITableView,
         heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
             let item = mediaItems[indexPath.row] as Media
-          return MediaTableViewCell.heightForMediaItem(item, width: CGRectGetWidth(self.view.bounds))
+            return MediaTableViewCell.heightForMediaItem(item, width: CGRectGetWidth(self.view.bounds))
     }
     
     /*
@@ -212,4 +214,54 @@ class MediaTableViewController: UITableViewController {
         infiniteScrollIfNecessary()
     }
 
+    // MARK: - MediaTableViewCellDelegate
+    
+    func cell(cell: MediaTableViewCell, didTapImageView imageView: UIImageView) {
+        var fullScreenVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("MediaFullScreenViewController") as MediaFullScreenViewController
+        
+        lastTappedImageView = imageView;
+        fullScreenVC.mediaItem = cell.mediaItem
+        fullScreenVC.transitioningDelegate = self
+        fullScreenVC.modalPresentationStyle = .Custom;
+        
+        presentViewController(fullScreenVC, animated:true, completion:nil)
+    }
+    
+    func cell(cell: MediaTableViewCell, didLongPressImageView imageView: UIImageView) {
+        var itemsToShare = [AnyObject]()
+        
+        if (cell.mediaItem.caption != nil) {
+            itemsToShare.append(cell.mediaItem.caption!)
+        }
+        
+        if (cell.mediaItem.image != nil) {
+            itemsToShare.append(cell.mediaItem.image!)
+        }
+        
+        if (itemsToShare.count > 0) {
+            let activityVC = UIActivityViewController(activityItems: itemsToShare, applicationActivities:nil)
+            presentViewController(activityVC, animated:true, completion:nil)
+        }
+        
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController: UIViewController, source: UIViewController ) -> UIViewControllerAnimatedTransitioning {
+        
+        let animator = MediaFullScreenAnimator()
+        animator.presenting = true
+        if lastTappedImageView != nil {
+            animator.cellImageView = lastTappedImageView!
+        }
+        return animator
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning {
+        let animator = MediaFullScreenAnimator()
+        if lastTappedImageView != nil {
+            animator.cellImageView = self.lastTappedImageView!
+        }
+        return animator
+    }
 }

@@ -8,7 +8,7 @@
         <scene sceneID="NDc-yg-PRW">
             <objects>
                 <tableViewController storyboardIdentifier="MediaTableViewController" title="BlocStagram" id="z4a-7L-rCn" customClass="MediaTableViewController" customModule="BlocStagramInSwift" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Rag-7h-CLx">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="403" sectionHeaderHeight="22" sectionFooterHeight="22" id="Rag-7h-CLx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -20,8 +20,52 @@
                     <navigationItem key="navigationItem" id="jHa-SN-s1N"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oNp-Rv-4Vv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="5Ce-75-kRI"/>
             </objects>
             <point key="canvasLocation" x="1888" y="429"/>
+        </scene>
+        <!--Media Full Screen View Controller-->
+        <scene sceneID="wtM-bS-ROd">
+            <objects>
+                <viewController storyboardIdentifier="MediaFullScreenViewController" id="laI-fp-Eqe" customClass="MediaFullScreenViewController" customModule="BlocStagramInSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Nyt-5t-bc9"/>
+                        <viewControllerLayoutGuide type="bottom" id="bwM-aD-JYd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LUy-FG-iiG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Qe-JE-o4h">
+                                <rect key="frame" x="-24" y="-20" width="600" height="600"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i1u-fA-qXC">
+                                        <rect key="frame" x="30" y="25" width="600" height="600"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="laI-fp-Eqe" id="5YK-YP-rbA"/>
+                                    <outletCollection property="gestureRecognizers" destination="d8q-Nr-jol" appends="YES" id="Rqb-gb-Jf7"/>
+                                    <outletCollection property="gestureRecognizers" destination="Ptf-ER-Jmi" appends="YES" id="5p0-uV-SFh"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="doubleTapGestureRecognizer" destination="Ptf-ER-Jmi" id="lcP-Pe-g7d"/>
+                        <outlet property="imageView" destination="i1u-fA-qXC" id="x4p-0V-qHQ"/>
+                        <outlet property="scrollView" destination="2Qe-JE-o4h" id="Lg9-gF-cMC"/>
+                        <outlet property="tapGestureRecognizer" destination="d8q-Nr-jol" id="F6E-SL-xCo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xCU-04-gHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="d8q-Nr-jol"/>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="Ptf-ER-Jmi"/>
+            </objects>
+            <point key="canvasLocation" x="1900" y="1195"/>
         </scene>
         <!--Login-->
         <scene sceneID="QHD-bn-4hk">
@@ -58,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Bk-QI-o3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1143" y="462"/>
+            <point key="canvasLocation" x="1143" y="429"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wwl-ym-tOM">

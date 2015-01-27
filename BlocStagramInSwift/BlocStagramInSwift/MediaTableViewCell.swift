@@ -8,7 +8,15 @@
 
 import UIKit
 
-class MediaTableViewCell: UITableViewCell {
+
+protocol MediaTableViewCellDelegate: NSObjectProtocol {
+
+    func cell(cell: MediaTableViewCell, didTapImageView imageView: UIImageView) -> Void
+    func cell(cell: MediaTableViewCell, didLongPressImageView imageView: UIImageView) -> Void
+
+}
+
+class MediaTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     
     var mediaItem: Media = Media() {
         didSet {
@@ -18,6 +26,8 @@ class MediaTableViewCell: UITableViewCell {
         }
     }
     
+    var delegate:MediaTableViewCellDelegate?
+    
     @IBOutlet weak var mediaImageView: UIImageView!
     @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     
@@ -26,6 +36,9 @@ class MediaTableViewCell: UITableViewCell {
     
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var commentLabelHeightConstraint: NSLayoutConstraint!
+    
+    var tapGestureRecognizer: UITapGestureRecognizer!
+    var longPressGestureRecognizer: UILongPressGestureRecognizer!
     
     struct Styling {
         static let lightFont = UIFont(name:"HelveticaNeue-Thin", size: 11)
@@ -67,9 +80,16 @@ class MediaTableViewCell: UITableViewCell {
         return CGRectGetMaxY(layoutCell.commentLabel.frame)
     }
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapFired:")
+        tapGestureRecognizer.delegate = self
+        mediaImageView.addGestureRecognizer(tapGestureRecognizer)
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressFired:")
+        longPressGestureRecognizer.delegate = self
+        mediaImageView.addGestureRecognizer(longPressGestureRecognizer)
     }
 
     override func setHighlighted(highlighted: Bool, animated:Bool) {
@@ -174,6 +194,26 @@ class MediaTableViewCell: UITableViewCell {
         
     }
     
+    // MARK: - UIGestureRecognizerDelegate
     
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        return self.editing == false
+    }
+    
+    @IBAction func tapFired(sender: UITapGestureRecognizer) {
+        println("Tap Fired!!!!!")
+        if sender.state == .Ended {
+            // handling code
+            delegate?.cell(self, didTapImageView: self.mediaImageView)
+        }
+    }
+    
+    @IBAction func longPressFired(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Began {
+            // handling code
+            delegate?.cell(self, didLongPressImageView: self.mediaImageView)
+        }
+        
+    }
     
 }

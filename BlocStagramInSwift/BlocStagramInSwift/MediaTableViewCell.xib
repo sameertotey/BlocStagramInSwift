@@ -34,9 +34,10 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GZQ-xk-4Le">
+                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GZQ-xk-4Le">
                         <rect key="frame" x="0.0" y="8" width="590" height="197"/>
                         <color key="backgroundColor" red="0.84002364309210531" green="0.74028577302631504" blue="0.30715460526315752" alpha="1" colorSpace="calibratedRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="height" constant="197" id="eES-Jn-4FC"/>
                         </constraints>
@@ -54,6 +55,7 @@
                     <constraint firstItem="B95-9G-mcC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="rbc-9R-I1i"/>
                 </constraints>
             </tableViewCellContentView>
+            <gestureRecognizers/>
             <connections>
                 <outlet property="commentLabel" destination="B95-9G-mcC" id="mnn-2n-xg2"/>
                 <outlet property="commentLabelHeightConstraint" destination="BPg-8P-14n" id="UT6-4z-L1J"/>
